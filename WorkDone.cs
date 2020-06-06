@@ -53,7 +53,7 @@ namespace WorkDone
 		}
 		private void OnBotStop(BotBase bot)
 		{			
-			quitwatch.Interval = settings.Delay * 60000;
+			quitwatch.Interval = (settings.Delay * 60000) + 1;
 
 			Logging.Write(LogColor, $"[{Name}] {bot.EnglishName} finished or stopped");
 
@@ -75,7 +75,15 @@ namespace WorkDone
 		{
 			if (settings.Alert = true)
 			{
-				System.Media.SystemSounds.Asterisk.Play();
+				if (File.Exists($@"Plugins\{Name}\alert.wav"))
+				{
+					System.Media.SoundPlayer player = new System.Media.SoundPlayer(System.Windows.Forms.Application.StartupPath + $@"\Plugins\{Name}\alert.wav");
+					player.Play();
+				}
+				else
+				{
+					System.Media.SystemSounds.Asterisk.Play();
+				}
 			}
 			actionDict[settings.Action]();
 
