@@ -17,7 +17,7 @@ namespace WorkDone
 	{
 		public override string Name => "WorkDone";
 		public override string Author => "Zimble";
-		public override Version Version => new Version(1,0,0,0);
+		public override Version Version => new Version(1,0,0,1);
 		public override bool WantButton => true;
 		public override string ButtonText => "Settings";
 		public static WorkDoneSettings settings = WorkDoneSettings.Instance;
@@ -31,11 +31,6 @@ namespace WorkDone
 		}
 		public override void OnEnabled()
 		{
-			actionDict["Close FFXIV"] = CloseFFXIV;
-			actionDict["Logoff PC"] = LogoffPC;
-			actionDict["Restart PC"] = RestartPC;
-			actionDict["Shutdown PC"] = ShutdownPC;
-
 			Logging.Write(LogColor, $"[{Name}] is enabled and set to {settings.Action} {settings.Delay}m after {settings.BotBase} has stopped");
 			quitwatch.AutoReset = false;
 			TreeRoot.OnStop += new ff14bot.BotEvent(OnBotStop);
@@ -55,7 +50,7 @@ namespace WorkDone
 		{			
 			quitwatch.Interval = (settings.Delay * 60000) + 1;
 
-			Logging.Write(LogColor, $"[{Name}] {bot.EnglishName} finished or stopped");
+			Logging.Write(LogColor, $"[{Name}] {bot.Name} finished or stopped");
 
 			if (bot.Name == settings.BotBase)
 			{				
@@ -89,7 +84,12 @@ namespace WorkDone
 
 		}
 		public void CreateSettingsForm()
-		{
+		{			
+			actionDict["Close FFXIV"] = CloseFFXIV;
+			actionDict["Logoff PC"] = LogoffPC;
+			actionDict["Restart PC"] = RestartPC;
+			actionDict["Shutdown PC"] = ShutdownPC;
+
 			Form1 settingsForm = new Form1();
 			settingsForm.ShowDialog();
 		}
