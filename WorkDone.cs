@@ -84,11 +84,18 @@ namespace WorkDone
 
 		}
 		public void CreateSettingsForm()
-		{			
+		{
+			#if RB_CN			
+			actionDict["退出FF14"] = CloseFFXIV;
+			actionDict["注销"] = LogoffPC;
+			actionDict["重启电脑"] = RestartPC;
+			actionDict["关闭电脑"] = ShutdownPC;
+			#else
 			actionDict["Close FFXIV"] = CloseFFXIV;
 			actionDict["Logoff PC"] = LogoffPC;
 			actionDict["Restart PC"] = RestartPC;
 			actionDict["Shutdown PC"] = ShutdownPC;
+			#endif
 
 			Form1 settingsForm = new Form1();
 			settingsForm.ShowDialog();
@@ -158,18 +165,30 @@ namespace WorkDone
 			botbaseBox.SelectedValue = WorkDone.settings.BotBase;
 			botbaseBox.SelectionChangeCommitted += new EventHandler(botbaseBox_SelectionChangeCommitted);
 			
+			#if RB_CN
+			alertBox.Text = "声音警告";
+			#else
 			alertBox.Text = "Audio alert";
+			#endif
 			alertBox.Checked = WorkDone.settings.Alert;
 			alertBox.CheckedChanged += new EventHandler(alertBox_CheckedChanged);
 			
 			delayBox.Value = WorkDone.settings.Delay;
 			delayBox.ValueChanged += new EventHandler(delayBox_ValueChanged);
 			
+			#if RB_CN
+			afterLabel.Text = "分钟后";
+			#else
 			afterLabel.Text = "minutes after";
+			#endif
 			afterLabel.AutoSize = true;
 			afterLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
+			#if RB_CN
+			isdoneLabel.Text = "完成";
+			#else
 			isdoneLabel.Text = "is finished.";
+			#endif
 			isdoneLabel.AutoSize = true;
 			isdoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;			
 		}
@@ -223,7 +242,11 @@ namespace WorkDone
 		}
 
 		[Setting]
+		#if RB_CN
+		[DefaultValue("退出FF14")]
+		#else
 		[DefaultValue("Close FFXIV")]
+		#endif
 		public string Action
 		{
 			get => _action;
@@ -244,7 +267,11 @@ namespace WorkDone
 		}
 
 		[Setting]
+		#if RB_CN
+		[DefaultValue("序列模式")]
+		#else
 		[DefaultValue("Order Bot")]
+		#endif
 		public string BotBase
 		{
 			get => _botBase;
