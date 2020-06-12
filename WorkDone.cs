@@ -60,6 +60,17 @@ namespace WorkDone
 		}
 		public override void OnInitialize()
 		{
+			#if RB_CN			
+			actionDict["退出FF14"] = CloseFFXIV;
+			actionDict["注销"] = LogoffPC;
+			actionDict["重启电脑"] = RestartPC;
+			actionDict["关闭电脑"] = ShutdownPC;
+			#else
+			actionDict["Close FFXIV"] = CloseFFXIV;
+			actionDict["Logoff PC"] = LogoffPC;
+			actionDict["Restart PC"] = RestartPC;
+			actionDict["Shutdown PC"] = ShutdownPC;
+			#endif
 		}
 		void OnTimedEvent (object o, System.Timers.ElapsedEventArgs e)
 		{
@@ -85,18 +96,6 @@ namespace WorkDone
 		}
 		public void CreateSettingsForm()
 		{
-			#if RB_CN			
-			actionDict["退出FF14"] = CloseFFXIV;
-			actionDict["注销"] = LogoffPC;
-			actionDict["重启电脑"] = RestartPC;
-			actionDict["关闭电脑"] = ShutdownPC;
-			#else
-			actionDict["Close FFXIV"] = CloseFFXIV;
-			actionDict["Logoff PC"] = LogoffPC;
-			actionDict["Restart PC"] = RestartPC;
-			actionDict["Shutdown PC"] = ShutdownPC;
-			#endif
-
 			Form1 settingsForm = new Form1();
 			settingsForm.ShowDialog();
 		}
