@@ -54,18 +54,26 @@ namespace WorkDone
 
 			if (bot.Name == settings.BotBase)
 			{				
-				quitwatch.Start();				
+				quitwatch.Start();
+
+				if (settings.Alert = true)
+				{
+					AudioAlert();
+				}
+
 				TreeRoot.OnStart += new ff14bot.BotEvent(OnBotStart);
 			}
 		}
 		public override void OnInitialize()
 		{
-			#if RB_CN			
+			#if RB_CN
+			actionDict["延时提示"] = AudioAlert;
 			actionDict["退出FF14"] = CloseFFXIV;
 			actionDict["注销"] = LogoffPC;
 			actionDict["重启电脑"] = RestartPC;
 			actionDict["关闭电脑"] = ShutdownPC;
 			#else
+			actionDict["Delayed Alert"] = AudioAlert;
 			actionDict["Close FFXIV"] = CloseFFXIV;
 			actionDict["Logoff PC"] = LogoffPC;
 			actionDict["Restart PC"] = RestartPC;
@@ -79,25 +87,24 @@ namespace WorkDone
 		}
 		public void ExecuteOrder()
 		{
-			if (settings.Alert = true)
-			{
-				if (File.Exists($@"Plugins\{Name}\alert.wav"))
-				{
-					System.Media.SoundPlayer player = new System.Media.SoundPlayer(System.Windows.Forms.Application.StartupPath + $@"\Plugins\{Name}\alert.wav");
-					player.Play();
-				}
-				else
-				{
-					System.Media.SystemSounds.Asterisk.Play();
-				}
-			}
 			actionDict[settings.Action]();
-
 		}
 		public void CreateSettingsForm()
 		{
 			Form1 settingsForm = new Form1();
 			settingsForm.ShowDialog();
+		}
+		public void AudioAlert()
+		{
+			if (File.Exists($@"Plugins\{Name}\alert.wav"))
+			{
+				System.Media.SoundPlayer player = new System.Media.SoundPlayer(System.Windows.Forms.Application.StartupPath + $@"\Plugins\{Name}\alert.wav");
+				player.Play();
+			}
+			else
+			{
+				System.Media.SystemSounds.Asterisk.Play();
+			}
 		}
 		public void CloseFFXIV()
 		{
@@ -165,7 +172,7 @@ namespace WorkDone
 			botbaseBox.SelectionChangeCommitted += new EventHandler(botbaseBox_SelectionChangeCommitted);
 			
 			#if RB_CN
-			alertBox.Text = "声音警告";
+			alertBox.Text = "声音提示";
 			#else
 			alertBox.Text = "Audio alert";
 			#endif
@@ -189,7 +196,7 @@ namespace WorkDone
 			isdoneLabel.Text = "is finished.";
 			#endif
 			isdoneLabel.AutoSize = true;
-			isdoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;			
+			isdoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 		}
 		public Form1()
 		{
